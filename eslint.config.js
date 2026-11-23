@@ -16,4 +16,9 @@ export default tseslint.config(
       'react-refresh/only-export-components': 'error',
     },
   },
+  {
+    files: ['api/**/*.ts'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    languageOptions: { globals: globals.node },
+  },
 )

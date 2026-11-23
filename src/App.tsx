@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, BicepsFlexed, Crosshair, Dumbbell, Gauge, Instagram, Laptop, MapPin, Menu, Mountain, Quote, X, Zap } from 'lucide-react'
 import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { buildContactDraft, coachProfile, consultation, instagram, navigation, originalContact, posts, programs, services, testimonials, threads } from './content'
+import { coachProfile, consultation, instagram, navigation, originalContact, posts, programs, services, testimonials, threads } from './content'
 
 const serviceIcons = [Zap, Laptop, Dumbbell, BicepsFlexed, Crosshair]
 const programIcons = [Mountain, Zap, Gauge]
@@ -226,13 +226,30 @@ function Article() {
 }
 
 function Contact() {
-  const [opened, setOpened] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'invalid' | 'error'>('idle')
+  const sending = status === 'sending'
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    window.location.href = buildContactDraft(String(data.get('name')), String(data.get('email')), String(data.get('message')))
-    setOpened(true)
+    if (sending) return
+    const form = event.currentTarget
+    const body = Object.fromEntries(new FormData(form))
+    setStatus('sending')
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+      if (response.ok && (await response.json()).ok === true) {
+        form.reset()
+        setStatus('success')
+      } else {
+        setStatus(response.status === 400 ? 'invalid' : 'error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -247,12 +264,15 @@ function Contact() {
           <a className="text-link" href={instagram}>Find @coachbanx on Instagram <ArrowUpRight size={17} /></a>
         </section>
         <form className="contact-form" onSubmit={handleSubmit}>
-          <h2>WRITE A MESSAGE.</h2><p>This opens a draft in your email app. Review it and send it from there.</p>
-          <label htmlFor="name">Name <span>(required)</span></label><input name="name" id="name" autoComplete="name" required />
-          <label htmlFor="email">Email <span>(required)</span></label><input name="email" id="email" type="email" autoComplete="email" required />
-          <label htmlFor="message">Message <span>(required)</span></label><textarea name="message" id="message" rows={5} maxLength={1500} required />
-          <button className="button" type="submit">Open email draft <ArrowUpRight /></button>
-          {opened && <p role="status">If your email app didn’t open, use the original contact form below. This site has not sent your message.</p>}
+          <h2>WRITE A MESSAGE.</h2><p>Tell me a little about your goals so we can figure out where to start.</p>
+          <label htmlFor="name">Name <span>(required)</span></label><input name="name" id="name" autoComplete="name" maxLength={120} required disabled={sending} />
+          <label htmlFor="email">Email <span>(required)</span></label><input name="email" id="email" type="email" autoComplete="email" maxLength={254} required disabled={sending} />
+          <label htmlFor="message">Message <span>(required)</span></label><textarea name="message" id="message" rows={5} maxLength={1500} required disabled={sending} />
+          <div hidden><label htmlFor="website">Leave this field empty</label><input name="website" id="website" tabIndex={-1} autoComplete="off" /></div>
+          <button className="button" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send message'} <ArrowUpRight /></button>
+          {status === 'success' && <p className="form-status success" role="status">Thanks for reaching out. Your message was sent to Coach Banx.</p>}
+          {status === 'invalid' && <p className="form-status error" role="alert">Check that your name, email, and message are filled in correctly.</p>}
+          {status === 'error' && <p className="form-status error" role="alert">We couldn’t send your message. Please try again or use the original contact form below.</p>}
           <a className="text-link" href={originalContact}>Use the original contact form <ArrowUpRight size={17} /></a>
         </form>
       </div>

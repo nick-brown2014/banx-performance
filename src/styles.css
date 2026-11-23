@@ -148,7 +148,11 @@ em{font-style:normal;color:var(--acid)}
 .contact-form label span{color:var(--mute);font-weight:500;font-size:.73rem}
 .contact-form input,.contact-form textarea{width:100%;min-height:43px;border:1px solid #aab3a3;color:var(--ink);background:var(--paper);padding:9px 11px;border-radius:0}
 .contact-form textarea{resize:vertical}
-.contact-form .button,.contact-form .text-link,.contact-form [role=status]{margin-top:16px}
+.contact-form .button,.contact-form .text-link,.contact-form .form-status{margin-top:16px}
+.contact-form button:disabled{opacity:.65;cursor:wait}
+.contact-form .form-status{font-weight:800}
+.contact-form .form-status.success{color:var(--deep)}
+.contact-form .form-status.error{color:#9b211b}
 
 @media(max-width:900px){
   .shell{width:calc(100% - 64px)}
