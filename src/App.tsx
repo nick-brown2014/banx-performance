@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, BicepsFlexed, Crosshair, Dumbbell, Gauge, Instagram, Laptop, MapPin, Menu, Mountain, Quote, X, Zap } from 'lucide-react'
 import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { coachProfile, consultation, instagram, navigation, originalContact, posts, programs, services, testimonials, threads } from './content'
+import { coachProfile, consultation, instagram, navigation, posts, programs, services, testimonials, threads } from './content'
 
 const serviceIcons = [Zap, Laptop, Dumbbell, BicepsFlexed, Crosshair]
 const programIcons = [Mountain, Zap, Gauge]
@@ -272,8 +272,7 @@ function Contact() {
           <button className="button" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send message'} <ArrowUpRight /></button>
           {status === 'success' && <p className="form-status success" role="status">Thanks for reaching out. Your message was sent to Coach Banx.</p>}
           {status === 'invalid' && <p className="form-status error" role="alert">Check that your name, email, and message are filled in correctly.</p>}
-          {status === 'error' && <p className="form-status error" role="alert">We couldn’t send your message. Please try again or use the original contact form below.</p>}
-          <a className="text-link" href={originalContact}>Use the original contact form <ArrowUpRight size={17} /></a>
+          {status === 'error' && <p className="form-status error" role="alert">We couldn’t send your message. Please try again in a few minutes.</p>}
         </form>
       </div>
     </>
