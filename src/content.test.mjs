@@ -1,16 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildContactDraft, contactEmail, posts, programs } from './content.ts'
-
-test('a contact draft retains special characters without adding URL fields', () => {
-  const draft = new URL(buildContactDraft('  Ana & Jo  ', 'ana+banx@example.com', 'Speed? #1\n&cc=other@example.com'))
-  assert.equal(draft.protocol, 'mailto:')
-  assert.equal(draft.pathname, contactEmail)
-  assert.deepEqual([...draft.searchParams], [
-    ['subject', 'Banx Performance training inquiry'],
-    ['body', 'Name: Ana & Jo\nEmail: ana+banx@example.com\n\nSpeed? #1\n&cc=other@example.com'],
-  ])
-})
+import { posts, programs } from './content.ts'
 
 test('the original three programs lead to separate Trainerize checkouts', () => {
   assert.deepEqual(programs.map(({ name }) => name), ['Greenhorn', 'Bolt', 'Composite'])

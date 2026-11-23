@@ -3,7 +3,6 @@ export const coachProfile = trainerize + 'Banks.Telkamp/'
 export const instagram = 'https://www.instagram.com/coachbanx/'
 export const threads = 'https://www.threads.com/@coachbanx'
 export const originalContact = 'https://banxperformance.squarespace.com/contact'
-export const contactEmail = 'jbtelkamp99@outlook.com'
 const checkout = (plan: string) => trainerize + '?planGUID=' + plan + '&mode=checkout'
 export const consultation = checkout('60d0a5ef7b594ce49bd30f7d5c529d26')
 const coaching = checkout('37c544c1cb3f4f2bb2f1b1a2c7ecd322')
@@ -65,8 +64,3 @@ export const testimonials = [
   { name: 'Amy', quote: 'My main goal was to build all-around strength, and I’ve worked with a lot of trainers before, but none have helped me make progress like Banks has.' },
   { name: 'James', quote: 'I appreciate his attention to form and technique, which has helped me gain confidence in my abilities.' },
 ]
-
-export function buildContactDraft(name: string, email: string, message: string) {
-  return 'mailto:' + contactEmail + '?subject=' + encodeURIComponent('Banx Performance training inquiry') +
-    '&body=' + encodeURIComponent('Name: ' + name.trim() + '\nEmail: ' + email.trim() + '\n\n' + message.trim())
-}

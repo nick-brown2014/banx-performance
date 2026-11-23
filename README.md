@@ -11,8 +11,20 @@ npm run build
 npm run preview -- --host 0.0.0.0 --port 4173
 ```
 
-Deploy the generated `dist/` directory. Configure the static host to serve `index.html` for client-side routes such as `/services` and `/blog/elastic-performance`.
+Deploy the Vite project on Vercel. The frontend build goes to `dist/`; the Vercel Function at `api/contact.ts` handles `POST /api/contact`. For another host, deploy the API separately behind that same path, and serve `index.html` for client-side page routes.
 
-The contact form opens an email draft in the visitor’s mail app, rather than submitting to a backend. It also links to the original Squarespace form and to the Trainerize consultation. Verify the recipient and choose a form delivery service if direct submission is needed before launch.
+## Contact delivery
+
+Set these **server-only** environment variables in Vercel (do not prefix them with `VITE_` or commit credentials):
+
+| Variable | Purpose |
+| --- | --- |
+| `BANX_RESEND` | Resend API key with permission to send from the configured domain. |
+| `CONTACT_FROM_EMAIL` | Optional sender override. Defaults to `Banx Performance <contact@banxperformance.com>`; production sends require Resend to finish verifying that domain or an authorized verified sender override. |
+| `CONTACT_INBOX` | Optional recipient override. Defaults to `jbtelkamp99@outlook.com`, the business email listed in the original site's metadata. Verify it before launch. |
+
+Plain Vite dev and preview serve only the frontend. Use `vercel dev` with the server variables configured to exercise the form locally. For live test submissions, explicitly set `CONTACT_FROM_EMAIL=onboarding@resend.dev` and `CONTACT_INBOX=delivered@resend.dev`. The original Squarespace contact form remains available as a fallback while DNS verification is pending.
+
+The endpoint validates inputs server-side and silently discards requests that fill the hidden website field. Consider platform-level rate limiting if the form attracts abuse.
 
 See [SOURCE-NOTES.md](SOURCE-NOTES.md) for source details.
