@@ -1,4 +1,4 @@
-const businessInbox = 'jbtelkamp99@outlook.com'
+const businessInbox = 'banxperformance@outlook.com'
 const defaultSender = 'Banx Performance <contact@banxperformance.com>'
 const emailPattern = /^[^\s@<>(),;:"\\]+@[^\s@<>(),;:"\\]+\.[^\s@<>(),;:"\\]+$/
 const maxRequestBytes = 24 * 1024

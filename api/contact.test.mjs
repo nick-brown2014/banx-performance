@@ -12,15 +12,17 @@ function request(body, headers = {}) {
   })
 }
 
-function setTestEnv(t) {
+function setTestEnv(t, overrides = {}) {
   const values = {
     BANX_RESEND: 'test-key',
     CONTACT_FROM_EMAIL: 'Banx Performance <contact@example.com>',
     CONTACT_INBOX: 'delivered@resend.dev',
+    ...overrides,
   }
   for (const [key, value] of Object.entries(values)) {
     const previous = process.env[key]
-    process.env[key] = value
+    if (value === undefined) delete process.env[key]
+    else process.env[key] = value
     t.after(() => {
       if (previous === undefined) delete process.env[key]
       else process.env[key] = previous
@@ -45,6 +47,17 @@ test('valid contact fields are delivered to the configured inbox, with a safe re
   const response = await contact.fetch(request({ ...inquiry, to: 'other@example.com' }))
   assert.equal(response.status, 200)
   assert.deepEqual(await response.json(), { ok: true })
+  assert.equal(deliver.mock.callCount(), 1)
+})
+
+test('contact inquiries default to the Banx Performance inbox when no override is set', async (t) => {
+  setTestEnv(t, { CONTACT_INBOX: undefined })
+  const deliver = t.mock.method(globalThis, 'fetch', async (_url, options) => {
+    assert.deepEqual(JSON.parse(options.body).to, ['banxperformance@outlook.com'])
+    return Response.json({ id: 'test-email' })
+  })
+
+  assert.equal((await contact.fetch(request(inquiry))).status, 200)
   assert.equal(deliver.mock.callCount(), 1)
 })
 
