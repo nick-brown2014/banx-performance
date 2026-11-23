@@ -21,7 +21,7 @@ Set these **server-only** environment variables in Vercel (do not prefix them wi
 | --- | --- |
 | `BANX_RESEND` | Resend API key with permission to send from the configured domain. |
 | `CONTACT_FROM_EMAIL` | Optional sender override. Defaults to `Banx Performance <contact@banxperformance.com>`; production sends require Resend to finish verifying that domain or an authorized verified sender override. |
-| `CONTACT_INBOX` | Optional recipient override. Defaults to `jbtelkamp99@outlook.com`, the business email listed in the original site's metadata. Verify it before launch. |
+| `CONTACT_INBOX` | Optional recipient override. Defaults to `banxperformance@outlook.com`. On Vercel, leave this variable unset or set it to the same address for production delivery. |
 
 Plain Vite dev and preview serve only the frontend. Use `vercel dev` with the server variables configured to exercise the form locally. For live test submissions, explicitly set `CONTACT_FROM_EMAIL=onboarding@resend.dev` and `CONTACT_INBOX=delivered@resend.dev`. The original Squarespace contact form remains available as a fallback while DNS verification is pending.
 
