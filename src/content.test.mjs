@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { posts, programs } from './content.ts'
+import { navigation, programs } from './content.ts'
 
 test('the original three programs lead to separate Trainerize checkouts', () => {
   assert.deepEqual(programs.map(({ name }) => name), ['Greenhorn', 'Bolt', 'Composite'])
@@ -15,8 +15,6 @@ test('the original three programs lead to separate Trainerize checkouts', () => 
   assert.equal(new Set(plans).size, 3)
 })
 
-test('the journal retains the three original article paths', () => {
-  assert.deepEqual(posts.map(({ slug }) => slug), [
-    'elastic-performance', 'enhancing-vertical-jump-performance', 'why-should-youth-athletes-lift-weights',
-  ])
+test('site navigation does not link to the retired blog', () => {
+  assert.ok(navigation.every(({ path }) => path !== '/blog' && !path.startsWith('/blog/')))
 })

@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, BicepsFlexed, Crosshair, Dumbbell, Gauge, Instagram, Laptop, MapPin, Menu, Mountain, Quote, X, Zap } from 'lucide-react'
-import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { coachProfile, consultation, instagram, navigation, posts, programs, services, testimonials, threads } from './content'
+import { ArrowDown, ArrowRight, ArrowUpRight, BicepsFlexed, Crosshair, Dumbbell, Gauge, Instagram, Laptop, MapPin, Menu, Mountain, Quote, X, Zap } from 'lucide-react'
+import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import { coachProfile, consultation, instagram, navigation, programs, services, testimonials, threads } from './content'
 
 const serviceIcons = [Zap, Laptop, Dumbbell, BicepsFlexed, Crosshair]
 const programIcons = [Mountain, Zap, Gauge]
@@ -9,8 +9,7 @@ const programIcons = [Mountain, Zap, Gauge]
 function Brand() {
   return (
     <Link to="/" aria-label="Banx Performance home" className="brand">
-      <img src="/media/banx.svg" alt="" width="35" height="32" />
-      <span><strong>BANX</strong><small>PERFORMANCE</small></span>
+      <img src="/assets/banx-wordmark.webp" alt="" width="352" height="107" />
     </Link>
   )
 }
@@ -40,7 +39,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="shell">
         <div className="footer-main">
-          <div className="footer-identity"><div><Brand /><p>Strength & performance coaching.<br />Denver, Colorado · Online</p></div><img src="/media/emblem.webp" width="76" height="66" alt="" loading="lazy" /></div>
+          <div className="footer-identity"><div><Brand /><p>Strength & performance coaching.<br />Denver, Colorado · Online</p></div><img src="/assets/bp-mark.webp" width="76" height="60" alt="" loading="lazy" /></div>
           <div className="footer-social">
             <a href={instagram}><Instagram size={16} /> Instagram <ArrowUpRight size={14} /></a>
             <a href={threads}>Threads <ArrowUpRight size={14} /></a>
@@ -108,7 +107,7 @@ function Home() {
       </section>
       <section className="coach-section section" aria-labelledby="coach-heading">
         <div className="shell coach-grid">
-          <figure className="coach-image"><img src="/media/coach.webp" alt="Banks Telkamp, Coach Banx" loading="lazy" /><figcaption>BANKS TELKAMP / CSCS</figcaption></figure>
+          <figure className="coach-image"><img src="/assets/coach-banx.webp" alt="Banks Telkamp, Coach Banx" loading="lazy" /><figcaption>BANKS TELKAMP / CSCS</figcaption></figure>
           <div>
             <Overline>02 / Meet the coach</Overline>
             <h2 id="coach-heading">I’M COACH <em>BANX.</em></h2>
@@ -187,44 +186,6 @@ function Programs() {
   )
 }
 
-function Blog() {
-  return (
-    <>
-      <PageIntro kicker="The training journal" title="BETTER QUESTIONS." accent="BETTER TRAINING.">Coach Banx on speed, strength, and how to apply both in the gym and on the field.</PageIntro>
-      <section className="section shell" aria-label="Latest articles">
-        <div className="section-intro"><div><Overline>From the journal</Overline><h2>LATEST ARTICLES.</h2></div></div>
-        <div className="card-grid">
-          {posts.map(({ slug, image, category, title, intro }) => <article className="blog-card" key={slug}>
-            <Link to={'/blog/' + slug} className="blog-link">
-              <img src={'/media/' + image} alt="" loading="lazy" />
-              <div><p className="tag">{category}</p><h3>{title}</h3><p>{intro}</p><span className="text-link">Read article <ArrowUpRight size={17} /></span></div>
-            </Link>
-          </article>)}
-        </div>
-      </section>
-      <NextStep />
-    </>
-  )
-}
-
-function Article() {
-  const { slug } = useParams()
-  const post = posts.find((item) => item.slug === slug)
-  if (!post) return <NotFound />
-  return (
-    <>
-      <PageIntro kicker={post.category + ' / ' + post.date} title={post.title}>{post.intro}</PageIntro>
-      <article className="section shell article">
-        <Link className="text-link" to="/blog"><ArrowLeft size={17} /> Back to the journal</Link>
-        <p className="tag">Written by Johan Telkamp</p>
-        <img src={'/media/' + post.image} alt="" />
-        {post.sections.map(({ title, body }) => <section key={title}><h2>{title}</h2><p>{body}</p></section>)}
-      </article>
-      <NextStep />
-    </>
-  )
-}
-
 function Contact() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'invalid' | 'error'>('idle')
   const sending = status === 'sending'
@@ -286,7 +247,7 @@ function NotFound() {
 export default function App() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
-    const label = navigation.find(({ path }) => path === pathname)?.label ?? posts.find(({ slug }) => pathname === '/blog/' + slug)?.title ?? 'Page not found'
+    const label = navigation.find(({ path }) => path === pathname)?.label ?? 'Page not found'
     document.title = pathname === '/' ? 'Banx Performance | Denver Strength & Performance Coaching' : label + ' | Banx Performance'
     if (hash) document.getElementById(hash.slice(1))?.scrollIntoView()
     else window.scrollTo(0, 0)
@@ -301,8 +262,6 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/programs" element={<Programs />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Article />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
