@@ -101,7 +101,7 @@ em{font-style:normal;color:var(--acid)}
 .footer-main{display:grid;grid-template-columns:1fr auto auto;align-items:start;gap:clamp(25px,6vw,100px);padding-block:49px}
 .footer-main p{font-size:.78rem;margin-top:16px}
 .footer-identity{display:flex;align-items:center;gap:24px}
-.footer-identity>img{object-fit:contain;background:#fff;padding:5px}
+.footer-identity>img{object-fit:contain}
 .footer-main nav,.footer-social{display:grid;gap:12px}
 .footer-main a:not(.brand){display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700}
 .footer-main a:hover{color:var(--acid)}

@@ -39,7 +39,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="shell">
         <div className="footer-main">
-          <div className="footer-identity"><div><Brand /><p>Strength & performance coaching.<br />Denver, Colorado · Online</p></div><img src="/assets/bp-mark.webp" width="76" height="60" alt="" loading="lazy" /></div>
+          <div className="footer-identity"><div><Brand /><p>Strength & performance coaching.<br />Denver, Colorado · Online</p></div><img src="/media/emblem.webp" width="76" height="66" alt="" loading="lazy" /></div>
           <div className="footer-social">
             <a href={instagram}><Instagram size={16} /> Instagram <ArrowUpRight size={14} /></a>
             <a href={threads}>Threads <ArrowUpRight size={14} /></a>
